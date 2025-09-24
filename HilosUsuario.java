@@ -16,14 +16,14 @@ public class HilosUsuario extends Thread {
     public int fin;
     public int resultado;
 
-    public HilosUsuario(int fin) {
-        this.inicio = 0;
+    public HilosUsuario(int inicio, int fin) {
+        this.inicio = inicio;
         this.fin = fin;  //Se asigna el valor ingresado
     }
 
     @Override
     public void run() {
-        int suma = 0; 
+        int suma = 0;
         for (int i = inicio; i <= fin; i++) {
             suma += i;
             try {
@@ -48,7 +48,6 @@ public class HilosUsuario extends Thread {
             try {
                 System.out.print("Ingresa el numero de hilos: ");
                 numHilos = sc.nextInt();
-                
                 if (numHilos > 0) {
                     hilos = new HilosUsuario[numHilos];
                     break; //Salir del ciclo cuando es válido
@@ -64,12 +63,15 @@ public class HilosUsuario extends Thread {
         //pedir número para cada hilo
         for (int i = 0; i < numHilos; i++) {
             int fin = 0;
+            int inicio = 0;
             while (true) {
                 try {
-                    System.out.print("Hilo " + (i + 1) + "Ingresa un numero: ");
+                    System.out.print("Hilo " + (i + 1) + "Ingresa un numero inicio: ");
+                    inicio = sc.nextInt();
+                    System.out.print("Hilo " + (i + 1) + "Ingresa un numero fin: ");
                     fin = sc.nextInt();
 
-                    if (fin >= 0) {
+                    if (fin >= 0 && inicio>=0) {
                         break;
                     } else {
                         System.out.println("El numero debe ser 0 o mayor");
@@ -78,9 +80,8 @@ public class HilosUsuario extends Thread {
                     System.out.println("Ingresa solo numeros");
                 }
             }
-            hilos[i] = new HilosUsuario(fin); //Crea el hilo con el valor ingresado
-        }
-
+            hilos[i] = new HilosUsuario(inicio,fin); //Crea el hilo con el valor ingresado
+        } 
         //Iniciar hilos
         for (int i = 0; i < numHilos; i++) {
             hilos[i].start(); //Inicia el hilo
